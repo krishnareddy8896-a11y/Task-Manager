@@ -84,4 +84,4 @@ Pop-Location
 
 ## Production notes
 
-Set a unique `SECRET_KEY`, `DEBUG=False`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`, and a PostgreSQL `DATABASE_URL` in the deployment environment. Run `python manage.py migrate` and `python manage.py collectstatic --noinput`, then serve `config.wsgi:application` with Gunicorn. The frontend should be built with `npm run build` and hosted as static files; set `VITE_API_URL` to the deployed API before building.
+Set a unique `SECRET_KEY`, `DEBUG=False`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `CORS_ALLOWED_ORIGINS`, and a PostgreSQL `DATABASE_URL` in the deployment environment. Vercel hosts and preview origins under `*.vercel.app` are allowed by default. Production startup fails clearly when `DATABASE_URL` is missing because Vercel's filesystem is ephemeral. Run `python manage.py migrate` and `python manage.py collectstatic --noinput`, then serve `config.wsgi:application` with Gunicorn. The frontend should be built with `npm run build` and hosted as static files; set `VITE_API_URL` to the deployed API before building.
