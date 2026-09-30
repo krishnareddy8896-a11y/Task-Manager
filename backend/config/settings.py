@@ -7,7 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY", default="development-only-secret-key-change-me")
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = config("DEBUG", default=config("VERCEL", default="") != "1", cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1,.vercel.app", cast=Csv())
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions",

@@ -8,6 +8,14 @@ from tasks.models import Task
 
 
 @pytest.mark.django_db
+def test_root_health_check_is_public():
+    response = APIClient().get("/")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
+@pytest.mark.django_db
 def test_tasks_are_private_and_stats_are_scoped():
     from django.contrib.auth import get_user_model
 
