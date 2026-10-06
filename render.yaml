@@ -1,20 +1,11 @@
-databases:
-  - name: task-manager-db
-    databaseName: task_manager
-    user: task_manager
-    plan: basic-256mb
-    region: singapore
-
 services:
   - type: web
     name: task-manager-api
     runtime: python
-    plan: starter
-    region: singapore
+    plan: free
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    preDeployCommand: python manage.py migrate
-    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /
     envVars:
       - key: SECRET_KEY
@@ -24,6 +15,4 @@ services:
       - key: ALLOWED_HOSTS
         value: task-manager-api.onrender.com
       - key: DATABASE_URL
-        fromDatabase:
-          name: task-manager-db
-          property: connectionString
+        sync: false
