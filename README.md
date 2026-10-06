@@ -49,6 +49,14 @@ npm run dev
 
 Open the Vite URL printed by npm (normally `http://localhost:5173`). The API defaults to `http://localhost:8000/api`; override it with `VITE_API_URL` in `frontend/.env`.
 
+## Publish for a resume
+
+The local development servers above are only available while they are running on your computer. To get public links that remain available when your computer is off, deploy the API and database on Render and the frontend on Vercel. The Render blueprint at `render.yaml` creates a paid web service and a persistent PostgreSQL database in Singapore; review the current prices in Render before confirming deployment. Free Render web services can sleep when idle, and free Render PostgreSQL databases expire after 30 days, so the blueprint intentionally selects paid plans.
+
+1. Push this repository to GitHub, sign in to [Render](https://render.com/), and create a Blueprint from this repository. Render reads `render.yaml`, provisions the API and database, generates a `SECRET_KEY`, and runs database migrations before each deploy. Wait for the API service to report **Live**. Its public API URL will be `https://task-manager-api.onrender.com`; the health check is at `/` and API docs are at `/api/docs/`.
+2. Import the same repository in [Vercel](https://vercel.com/) and set the project root directory to `frontend`. Add the environment variable `VITE_API_URL` with the value `https://task-manager-api.onrender.com/api` for Production, Preview, and Development, then deploy. `frontend/vercel.json` keeps direct links to app routes working. Vercel-hosted domains are allowed by the API's CORS settings; if you use a custom frontend domain, add its exact origin to the Render service's `CORS_ALLOWED_ORIGINS` environment variable and redeploy.
+3. Use the production URL shown in Vercel on your resume. Test account registration and sign-in on that URL before sharing it. Keep both hosting services and the paid database active in their dashboards; availability depends on the hosting accounts and billing remaining in good standing.
+
 ## API
 
 | Method | Endpoint | Description |
